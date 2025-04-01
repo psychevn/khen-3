@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0 ">
+    <title>Gallery</title>
+    <link href="https://cdn.prod.website-files.com/67ea4ab67f5f079ded5373b2/67ea4ab77f5f079ded53746f_Favicon.jpg"
+        rel="shortcut icon" type="image/x-icon" />
+    <link href="https://cdn.prod.website-files.com/67ea4ab67f5f079ded5373b2/67ea4ab77f5f079ded537470_webclip.jpg"
+        rel="apple-touch-icon" />
+
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;600;700&family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap"
+        rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script defer src="../js/app.js"></script>
+</head>
+
+<body>
+
+    <header class="header">
+        <div class="logo">
+            <img class="logo-shuriken" src="../image/logo.png" />
+            <a class="logo-name" href="index.html"></a>
+        </div>
+        <div class="right-section">
+            <input type="checkbox" id="menu-check" />
+            <label for="menu-check" class="icons">
+                <img src="../image/menu-svgrepo-com.svg" id="menu-icon" />
+                <img src="../image/close-bold-svgrepo-com.svg" id="close-icon" />
+            </label>
+            <div class="menu">
+                <a href="index.html" style="--i: 0">Home</a>
+                <a href="about.html" style="--i: 1" class="clicked">About</a>
+                <a href="projects.html" style="--i: 2">Gallery</a>
+                <a href="index.html#contact" style="--i: 3">Contact</a>
+            </div>
+        </div>
+    </header>
+    <main>
+    <main>
+        <div class="hero-grid"><img
+            src="https://cdn.prod.website-files.com/67ea4ab67f5f079ded5373b2/67ea4ab77f5f079ded53741a_Hero%20Background%20Grid.svg"
+            loading="lazy" alt="Hero Grid" /></div>
+        <section id="projects-page">
+            <div class="container">
+                <div class="title">
+                    <div class="top-part">
+                        <h1>GALLERY</h1>
+                        <p>A collection of memories, experiences, and moments with friends!</p>
+                    </div>
+                </div>
+                <div class="other-projects">
+                    <p class="label">Album</p>
+                    <div class="filters">
+                        <p class="filter-all selected" data-filter="all">All</p>
+                        <p class="filter-website" data-filter="website">Me</p>
+                        <p class="filter-software" data-filter="software">Family</p>
+                        <p class="filter-design" data-filter="design">Friends</p>
+                        <p class="filter-other" data-filter="other">Videos</p>
+                    </div>
+                </div>
+                <div class="projects-wrapper"></div>
+            </div>
+
+        </section>
+    </main>
+    <script>
+        $(document).ready(function () {
+            var projects = [];
+            var currentIndex = 0;
+
+            // Local data for pictures or videos
+            var projectData = [
+                {
+                    id: 1,
+                    image_url: "../image/vid2.gif",
+                    tags: "all,other"
+                },
+                {
+                    id: 2,
+                    image_url: "../image/vid3.gif",
+                    tags: "all,other"
+                },
+                {
+                    id: 3,
+                    image_url: "../image/vid1.gif",
+                    tags: "all,other"
+                },
+                {
+                    id: 4,
+                    image_url: "../image/pic4.jpg",
+                    tags: "all,design"
+                },
+                {
+                    id: 5,
+                    image_url: "../image/pic2.jpg",
+                    tags: "all,website"
+                },
+                {
+                    id: 6,
+                    image_url: "../image/pic3.jpg",
+                    tags: "all,website"
+                },
+                {
+                    id: 7,
+                    image_url: "../image/pic7.jpg",
+                    tags: "all,software"
+                },
+                {
+                    id: 8,
+                    image_url: "../image/pic6.jpg",
+                    tags: "all,software"
+                },
+                {
+                    id: 9,
+                    image_url: "../image/pic8.jpg",
+                    tags: "all,design"
+                },
+                {
+                    id: 10,
+                    image_url: "../image/pic9.jpg",
+                    tags: "all,design"
+                },
+                {
+                    id: 11,
+                    image_url: "../image/pic10.jpg",
+                    tags: "all,design"
+                },
+
+
+
+            ];
+
+            // Function to fetch projects based on filter (using local data)
+            function fetchProjects(filter) {
+                // Simulate AJAX call by filtering local data
+                projects = projectData.filter(project => project.tags.includes(filter));
+                renderProjectCards();
+                renderProject(currentIndex);
+
+                // Set animation delay after projects are fetched
+                setAnimationDelay();
+            }
+
+            // Function to render project details
+            function renderProject(index) {
+                if (projects.length === 0) {
+                    console.log("No projects to render.");
+                    return;
+                }
+
+                var project = projects[index];
+                if (!project) {
+                    console.log("Project at index", index, "is undefined.");
+                    return;
+                }
+
+                $(".highlight .image img").attr("src", project.image_url || '');
+                $(".highlight .details .name").text(project.name || '');
+                $(".highlight .details .sub-details").text(project.sub_details || '');
+                $(".highlight .details .description").text(project.description || '');
+                $(".highlight .details .visit-page").attr("href", project.page_link || '');
+                $(".highlight .details .github-link").attr("href", project.github_link || '');
+
+                // Highlight the current project card
+                $(".project-card").removeClass("highlighted selected");
+                $(".project-card").eq(index).addClass("highlighted selected");
+
+                // Scroll to the top of the page
+                $("html, body").scrollTop(0);
+            }
+
+            // Function to render project cards
+            function renderProjectCards() {
+                var projectsWrapper = $(".projects-wrapper");
+                projectsWrapper.empty();
+
+                if (projects.length === 0) {
+                    console.log("No projects to render.");
+                    return;
+                }
+
+                projects.forEach(function (project, i) {
+                    var projectCard = $("<div>").addClass("project-card");
+                    var image = $("<img>").attr("src", project.image_url || '').attr("alt", project.name || '');
+                    var details = $("<div>").addClass("details");
+                    var name = $("<p>").addClass("name").text(project.name || '');
+                    var subDetails = $("<p>").addClass("sub-details").text(project.sub_details || '');
+
+                    // Append image and details to project card
+                    projectCard.append(image, details);
+                    details.append(name, subDetails);
+
+                    // Append project card to projects wrapper
+                    projectsWrapper.append(projectCard);
+
+                    // Add click event listener to project cards
+                    projectCard.on("click", function () {
+                        currentIndex = i;
+                        renderProject(currentIndex);
+
+                        // Scroll to the top of the page
+                        $("html, body").scrollTop(0);
+                    });
+                });
+            }
+
+            // Function to handle next project
+            function nextProject() {
+                if (projects.length === 0) {
+                    console.log("No projects to navigate.");
+                    return;
+                }
+
+                currentIndex = (currentIndex + 1) % projects.length;
+                renderProject(currentIndex);
+
+                // Hide projects wrapper to trigger animation
+                $(".highlight").removeClass("animate-slide-right").addClass("animate-slide-left");
+                $(".highlight").hide(0).show(0);
+            }
+
+            // Function to handle previous project
+            function prevProject() {
+                if (projects.length === 0) {
+                    console.log("No projects to navigate.");
+                    return;
+                }
+
+                currentIndex = (currentIndex - 1 + projects.length) % projects.length;
+                renderProject(currentIndex);
+
+                // Hide projects wrapper to trigger animation
+                $(".highlight").removeClass("animate-slide-left").addClass("animate-slide-right");
+                $(".highlight").hide(0).show(0);
+            }
+
+            // Event listener for next button
+            $(".next-button").on("click", nextProject);
+
+            // Event listener for previous button
+            $(".prev-button").on("click", prevProject);
+
+            // Initial fetch projects with 'all' filter
+            fetchProjects('all');
+
+            // Function to set animation delay
+            function setAnimationDelay() {
+                $(".project-card").each(function (i) {
+                    var initialDelay = 1;
+                    var animationDelay = (initialDelay + i * 0.5) + "s";
+                    $(this).css({
+                        "opacity": 0,
+                        "animation": "slideUp 1.5s ease forwards",
+                        "animation-delay": animationDelay
+                    });
+                });
+            }
+
+            // Function to handle filter selection
+            $(".filters p").on("click", function () {
+                // Remove selected class from all filter buttons
+                $(".filters p").removeClass("selected");
+
+                // Add selected class to the clicked filter button
+                $(this).addClass("selected");
+
+                // Reset currentIndex to 0
+                currentIndex = 0;
+
+                // Get the filter value
+                var filterValue = $(this).data("filter");
+
+                // Fetch projects based on the selected filter
+                fetchProjects(filterValue);
+            });
+        });
+
+
+    </script>
+</body>
+
+</html>
